@@ -15,6 +15,7 @@ end;
 TLineFigure = class(TFigure)
   Points: array of TFloatPoint;
   PenColor,BrushColor: TColor;
+  PenStyle: TPenStyle;
   Width: integer;
   procedure Draw(ACanvas:TCanvas); override;
 end;
@@ -60,13 +61,14 @@ Implementation
 procedure TLineFigure.Draw(ACanvas:TCanvas);
 begin
   ACanvas.Pen.Color := PenColor;
+  ACanvas.Pen.Style := PenStyle;
   ACanvas.Pen.Width := Width;
 end;
 
 procedure TObjectFigure.Draw(ACanvas:TCanvas);
 begin
   Inherited;
-   ACanvas.Brush.Style := BrushStyle;
+  ACanvas.Brush.Style := BrushStyle;
   ACanvas.Brush.Color := BrushColor;
 end;
 

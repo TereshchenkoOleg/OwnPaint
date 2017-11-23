@@ -14,8 +14,8 @@ type
 
   { TDForm }
   TDForm = class(TForm)
+    ClearAll: TSpeedButton;
     ShowAllButton: TSpeedButton;
-    ParamsPanel: TPanel;
     ZoomSpinEdit: TSpinEdit;
     ScrollBarHorizontal: TScrollBar;
     ScrollBarVertical: TScrollBar;
@@ -27,6 +27,7 @@ type
     PaintBox: TPaintBox;
     Panel: TPanel;
     BackButton: TSpeedButton;
+    procedure ClearAllClick(Sender: TObject);
     procedure ShowAllButtonClick(Sender: TObject);
     procedure HelpItemClick(Sender: TObject);
     procedure PaintBoxMouseDown(Sender: TObject; Button: TMouseButton;
@@ -59,9 +60,8 @@ var
   DForm: TDForm;
   IsDrawing: boolean;
   CurrentTool: TFigureTool;
-  Param: array  of TParam;
+  Param: array of TParam;
   CanvasItems, History: array of TFigure;
-  CurrentLineColor, CurrentFillColor: TColor;
   CurrentLineWidth: integer;
 
 implementation
@@ -79,8 +79,6 @@ begin
   DForm.DoubleBuffered := True;
   DForm.Caption := ApplicationName;
   CurrentTool := TPolyLineTool.Create();
-  APenColor := clBlack;
-  ABrushColor := clBlack;
   AWidth := 1;
   ARadiusX := 30;
   ARadiusY := 30;
@@ -98,18 +96,27 @@ begin
     b.Tag := i;
     b.OnClick := @ToolButtonClick;
     CurrentIcon := TPicture.Create;
-    CurrentIcon.LoadFromFile(Tool[i].ClassName + '.png');
+    CurrentIcon.LoadFromFile('./icons/' + Tool[i].ClassName + '.png');
     b.Glyph := CurrentIcon.Bitmap;
     CurrentIcon.Free;
   end;
 end;
+
 procedure TDForm.ToolButtonClick(Sender: TObject);
-  begin
+var
+ParamsPanel: TPanel;
+begin
   CurrentTool := Tool[(Sender as TSpeedButton).tag];
-  CurrentTool.ParamListCreate;
+  ParamsPanel:= TPanel.Create(DForm);
+  ParamsPanel.Parent:=Panel;
+  ParamsPanel.Width:=110;
+  ParamsPanel.Height:=300;
+  ParamsPanel.Left:=8;
+  ParamsPanel.Top:=248;
   CurrentTool.ParamsCreate(ParamsPanel);
   Invalidate;
 end;
+
 procedure TDForm.CloseItemClick(Sender: TObject);
 begin
   DForm.Close;
@@ -122,25 +129,29 @@ end;
 
 procedure TDForm.ShowAllButtonClick(Sender: TObject);
 begin
-  RectZoom(PaintBox.Height,PaintBox.Width,MinPoint,MaxPoint);
+  RectZoom(PaintBox.Height, PaintBox.Width, MinPoint, MaxPoint);
   Invalidate;
-  ScrollBarVertical.Max:=trunc(MaxPoint.Y);
-  ScrollBarVertical.Min:=trunc(MinPoint.Y);
-  ScrollBarHorizontal.Max:=trunc(MaxPoint.X);
-  ScrollBarHorizontal.Min:=trunc(MinPoint.X);
-  Offset.X:=0;
-  Offset.Y:=0;
+  ScrollBarVertical.Max := trunc(MaxPoint.Y);
+  ScrollBarVertical.Min := trunc(MinPoint.Y);
+  ScrollBarHorizontal.Max := trunc(MaxPoint.X);
+  ScrollBarHorizontal.Min := trunc(MinPoint.X);
+  Offset.X := 0;
+  Offset.Y := 0;
+end;
+
+procedure TDForm.ClearAllClick(Sender: TObject);
+begin
+  SetLength(CurrentFigures, 0);
+  PaintBox.Invalidate;
 end;
 
 procedure TDForm.PaintBoxMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: integer);
 begin
-  begin
-  end;
   if Button = mbLeft then
   begin
-  IsDrawing := true;
-  CurrentTool.MouseDown(X, Y);
+    IsDrawing := True;
+    CurrentTool.MouseDown(X, Y);
     MaxMin(ScreenToWorld(Point(X, Y)));
     PaintBox.Invalidate;
   end;
@@ -194,11 +205,13 @@ begin
   Offset := Point(ScrollBarHorizontal.Position, ScrollBarVertical.Position);
   PaintBox.Invalidate;
 end;
+
 procedure TDForm.ZoomSpinEditChange(Sender: TObject);
 begin
-ZoomSpinEdit.Value:= Zoom;
+  ZoomSpinEdit.Value := Zoom;
   Invalidate;
 end;
+
 procedure TDForm.BackActionExecute(Sender: TObject);
 begin
   if Length(CurrentFigures) > 0 then
