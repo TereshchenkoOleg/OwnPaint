@@ -4,7 +4,7 @@ unit Figures;
 
 interface
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics,toolsparams, Dialogs, ExtCtrls,
   Menus, StdCtrls, ActnList, Spin, GraphMath, Scale;
 
 type

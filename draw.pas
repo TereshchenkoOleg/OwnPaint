@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, GraphMath, Dialogs, Menus,
   ExtCtrls, LCLIntf, LCLType, Spin, ActnList, Buttons, StdCtrls, Help,
-  Figures, tools, Scale;
+  Figures, tools, Scale, toolsparams;
 
 type
 
@@ -175,10 +175,8 @@ begin
   if Button = mbLeft then
   begin
     IsDrawing := False;
+    CurrentTool.MouseUp(X, Y, PaintBox.Canvas);
     PaintBox.Invalidate;
-    for i := Low(History) to High(History) do
-      FreeAndNil(History[i]);
-    SetLength(History, 0);
   end;
 end;
 

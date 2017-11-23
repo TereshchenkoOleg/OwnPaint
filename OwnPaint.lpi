@@ -33,7 +33,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="7">
       <Unit0>
         <Filename Value="OwnPaint.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -68,6 +68,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Scale"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="toolsparams.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -59,4 +59,5 @@ begin
     MinPoint.y := APoint.y;
 end;
 
+begin
 end.
