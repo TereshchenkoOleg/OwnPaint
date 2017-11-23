@@ -11,7 +11,7 @@ type
 TFigureTool = class
   Icons: string;
   Param: array of TParam;
-  procedure MouseDown(X: integer;Y: integer); virtual; abstract;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); virtual; abstract;
   procedure MouseMove(X: integer;Y: integer); virtual; abstract;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); virtual;abstract;
   procedure ParamListCreate();virtual;abstract;
@@ -29,28 +29,28 @@ TObjectFigureTool = class(TLineFigureTool)
 end;
 
 TPolyLineTool = class(TLineFigureTool)
-  procedure MouseDown(X: integer;Y: integer); override;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); override;
   procedure MouseMove(X: integer;Y: integer); override;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); override;
 
 end;
 
 TLineTool = class(TLineFigureTool)
-  procedure MouseDown(X: integer;Y: integer); override;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); override;
   procedure MouseMove(X: integer;Y: integer); override;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); override;
 
 end;
 
 TEllipseTool = class(TObjectFigureTool)
-  procedure MouseDown(X: integer;Y: integer); override;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); override;
   procedure MouseMove(X: integer;Y: integer); override;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); override;
 
 end;
 
 TRectangleTool = class(TObjectFigureTool)
-  procedure MouseDown(X: integer;Y: integer); override;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); override;
   procedure MouseMove(X: integer;Y: integer); override;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); override;
 
@@ -58,20 +58,20 @@ end;
 
 TPawTool = class(TFigureTool)
   FirstPoint: TPoint;
-  procedure MouseDown(X: integer;Y: integer); override;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); override;
   procedure MouseMove(X: integer;Y: integer); override;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); override;
   procedure ParamListCreate(); override;
 end;
 
 TMagnifierTool = class(TFigureTool)
-  procedure MouseDown(X: integer;Y: integer); override;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); override;
   procedure MouseMove(X: integer;Y: integer); override;
   procedure ParamListCreate(); override;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); override;
 end;
 TRoundedRectangleTool = class(TObjectFigureTool)
-  procedure MouseDown(X: integer;Y: integer); override;
+  procedure MouseDown(X: integer;Y: integer;AWidth: integer); override;
   procedure MouseMove(X: integer;Y: integer); override;
   procedure MouseUp(X: integer;Y: integer; ACanvas: TCanvas); override;
   procedure ParamListCreate(); override;
@@ -79,7 +79,6 @@ end;
 
 var
   Tool: array of TFigureTool;
-    AWidth: integer;
 implementation
 procedure TLineFigureTool.ParamListCreate();
 begin
@@ -155,7 +154,7 @@ begin
  SetLength(CurrentFigures, Length(CurrentFigures) - 1);
 end;
 
-procedure TMagnifierTool.MouseDown(X: integer;Y: integer);
+procedure TMagnifierTool.MouseDown(X: integer;Y: integer;AWidth: integer);
 var
   AFigure: TRectangleMagnifier;
 begin
@@ -172,7 +171,7 @@ begin
   (CurrentFigures[high(CurrentFigures)] as TLineFigure).Points[1] := ScreenToWorld(Point(X,Y));
 end;
 
-procedure TPawTool.MouseDown(X: integer;Y: integer);
+procedure TPawTool.MouseDown(X: integer;Y: integer;AWidth: integer);
 begin
   FirstPoint := Point(X,Y);
 end;
@@ -184,7 +183,7 @@ begin
   FirstPoint:=Point(X,Y);
 end;
 
-procedure TPolyLineTool.MouseDown(X: integer;Y: integer);
+procedure TPolyLineTool.MouseDown(X: integer;Y: integer;AWidth: integer);
 var
   AFigure: TLineFigure;
 begin
@@ -199,7 +198,7 @@ begin
   MaxMin(Point(X,Y));
 end;
 
-procedure TLineTool.MouseDown(X: integer;Y: integer);
+procedure TLineTool.MouseDown(X: integer;Y: integer;AWidth: integer);
 var
   AFigure: TLineFigure;
 begin
@@ -215,7 +214,7 @@ begin
  MaxMin(Point(X,Y));
 end;
 
-procedure TRectangleTool.MouseDown(X: integer;Y: integer);
+procedure TRectangleTool.MouseDown(X: integer;Y: integer;AWidth: integer);
 var
   AFigure: TObjectFigure;
 begin
@@ -233,7 +232,7 @@ begin
  MaxMin(Point(X,Y));
 end;
 
-procedure TEllipseTool.MouseDown(X: integer;Y: integer);
+procedure TEllipseTool.MouseDown(X: integer;Y: integer;AWidth: integer);
 var
   AFigure: TObjectFigure;
 begin
@@ -250,7 +249,7 @@ begin
  AFigure.BrushStyle := ABrushStyle;
  MaxMin(Point(X,Y));
 end;
-procedure TRoundedRectangleTool.MouseDown(X: integer;Y: integer);
+procedure TRoundedRectangleTool.MouseDown(X: integer;Y: integer;AWidth: integer);
 var
   AFigure: TObjectFigure;
 begin

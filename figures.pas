@@ -54,7 +54,7 @@ TRoundedRectangle= class(TObjectFigure)
   end;
 var
   CurrentFigures: array of TFigure;
-  layer: array of Tfigure;
+  layer: array of TFigure;
 
 Implementation
 

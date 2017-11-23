@@ -15,9 +15,9 @@ type
   { TDForm }
   TDForm = class(TForm)
     ClearAll: TSpeedButton;
+    ScrollBarHorizontal: TScrollBar;
     ShowAllButton: TSpeedButton;
     ZoomSpinEdit: TSpinEdit;
-    ScrollBarHorizontal: TScrollBar;
     ScrollBarVertical: TScrollBar;
     ToolPanel: TPanel;
     MainMenu: TMainMenu;
@@ -62,8 +62,6 @@ var
   CurrentTool: TFigureTool;
   Param: array of TParam;
   CanvasItems, History: array of TFigure;
-  CurrentLineWidth: integer;
-
 implementation
 
 {$R *.lfm}
@@ -151,7 +149,7 @@ begin
   if Button = mbLeft then
   begin
     IsDrawing := True;
-    CurrentTool.MouseDown(X, Y);
+    CurrentTool.MouseDown(X, Y, AWidth);
     MaxMin(ScreenToWorld(Point(X, Y)));
     PaintBox.Invalidate;
   end;

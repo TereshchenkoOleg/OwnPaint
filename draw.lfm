@@ -1,7 +1,7 @@
 object DForm: TDForm
-  Left = 379
+  Left = 389
   Height = 614
-  Top = 152
+  Top = 114
   Width = 974
   Caption = 'OwnPaint'
   ClientHeight = 594
@@ -14,7 +14,7 @@ object DForm: TDForm
   Visible = True
   object ScrollBarVertical: TScrollBar
     Left = 952
-    Height = 568
+    Height = 594
     Top = 0
     Width = 22
     Align = alRight
@@ -22,15 +22,16 @@ object DForm: TDForm
     Kind = sbVertical
     PageSize = 0
     TabOrder = 1
+    OnScroll = ScrollBarScroll
   end
   object Panel: TPanel
     Left = 0
-    Height = 568
+    Height = 594
     Top = 0
     Width = 128
     Align = alLeft
     BorderStyle = bsSingle
-    ClientHeight = 564
+    ClientHeight = 590
     ClientWidth = 124
     Color = clSilver
     ParentColor = False
@@ -101,7 +102,7 @@ object DForm: TDForm
   end
   object PaintBox: TPaintBox
     Left = 128
-    Height = 568
+    Height = 594
     Top = 0
     Width = 824
     Align = alClient
@@ -112,13 +113,17 @@ object DForm: TDForm
     OnPaint = PaintBoxPaint
   end
   object ScrollBarHorizontal: TScrollBar
-    Left = 0
-    Height = 26
-    Top = 568
-    Width = 974
-    Align = alBottom
+    AnchorSideLeft.Control = Panel
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideRight.Control = ScrollBarVertical
+    Left = 128
+    Height = 22
+    Top = 572
+    Width = 824
+    Anchors = [akLeft, akRight]
     PageSize = 0
     TabOrder = 2
+    OnScroll = ScrollBarScroll
   end
   object MainMenu: TMainMenu
     left = 800

@@ -37,7 +37,7 @@ TRoundingRadiusParamY = class(TParam)
   procedure CreateObjects(Panel: TPanel); override;
   end;
 TBrushStyleParam = class(TParam)
-  const BStyles: array [0..7] of TBrushStyle = (bsSolid, bsClear,
+  const BStyles: array [0..7] of TBrushStyle = (bsClear, bsSolid,
 bsHorizontal, bsVertical, bsFDiagonal, bsBDiagonal, bsCross, bsDiagCross);
   procedure ChangeBrushStyle(Sender: TObject);
   procedure CreateObjects(Panel: TPanel); override;
