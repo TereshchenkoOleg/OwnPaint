@@ -36,21 +36,6 @@ object DForm: TDForm
     Color = clSilver
     ParentColor = False
     TabOrder = 0
-    object BackButton: TSpeedButton
-      Left = 8
-      Height = 30
-      Top = 112
-      Width = 108
-      Caption = '←'
-      Font.CharSet = RUSSIAN_CHARSET
-      Font.Height = -21
-      Font.Name = 'Arial Narrow'
-      Font.Pitch = fpVariable
-      Font.Quality = fqDraft
-      OnClick = BackActionExecute
-      OnChangeBounds = BackActionExecute
-      ParentFont = False
-    end
     object ToolPanel: TPanel
       Left = 8
       Height = 104
@@ -62,42 +47,13 @@ object DForm: TDForm
     object ZoomSpinEdit: TSpinEdit
       Left = 8
       Height = 23
-      Top = 216
-      Width = 108
+      Top = 184
+      Width = 105
       Enabled = False
       MinValue = 1
       OnChange = ZoomSpinEditChange
       TabOrder = 1
       Value = 1
-    end
-    object ShowAllButton: TSpeedButton
-      Left = 8
-      Height = 30
-      Top = 176
-      Width = 108
-      Caption = 'Показть всё'
-      Font.CharSet = RUSSIAN_CHARSET
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Pitch = fpVariable
-      Font.Quality = fqDraft
-      OnClick = ShowAllButtonClick
-      OnChangeBounds = BackActionExecute
-      ParentFont = False
-    end
-    object ClearAll: TSpeedButton
-      Left = 8
-      Height = 30
-      Top = 144
-      Width = 108
-      Caption = 'Очистить всё'
-      Font.CharSet = RUSSIAN_CHARSET
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Pitch = fpVariable
-      Font.Quality = fqDraft
-      OnClick = ClearAllClick
-      ParentFont = False
     end
   end
   object PaintBox: TPaintBox
@@ -133,6 +89,29 @@ object DForm: TDForm
       object CloseItem: TMenuItem
         Caption = 'Выход'
         OnClick = CloseItemClick
+      end
+    end
+    object EditItem: TMenuItem
+      Caption = 'Редактировать'
+      object BackItem: TMenuItem
+        Caption = 'Назад'
+        OnClick = BackActionExecute
+      end
+      object ClearItem: TMenuItem
+        Caption = 'Отчистить всё'
+        OnClick = ClearAllClick
+      end
+      object ShowItem: TMenuItem
+        Caption = 'Показать всё'
+        OnClick = ShowAllButtonClick
+      end
+      object SelectedAllItem: TMenuItem
+        Caption = 'Выбрать все '
+        OnClick = SelectedAllItemClick
+      end
+      object DeleteSelectedItem: TMenuItem
+        Caption = 'Удалить выделенное'
+        OnClick = DeleteSelectedItemClick
       end
     end
     object HelpItem: TMenuItem

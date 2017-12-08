@@ -14,9 +14,13 @@ type
 
   { TDForm }
   TDForm = class(TForm)
-    ClearAll: TSpeedButton;
+    BackItem: TMenuItem;
+    EditItem: TMenuItem;
+    ClearItem: TMenuItem;
+    DeleteSelectedItem: TMenuItem;
+    SelectedAllItem: TMenuItem;
     ScrollBarHorizontal: TScrollBar;
-    ShowAllButton: TSpeedButton;
+    ShowItem: TMenuItem;
     ZoomSpinEdit: TSpinEdit;
     ScrollBarVertical: TScrollBar;
     ToolPanel: TPanel;
@@ -26,8 +30,9 @@ type
     HelpItem: TMenuItem;
     PaintBox: TPaintBox;
     Panel: TPanel;
-    BackButton: TSpeedButton;
     procedure ClearAllClick(Sender: TObject);
+    procedure DeleteSelectedItemClick(Sender: TObject);
+    procedure SelectedAllItemClick(Sender: TObject);
     procedure ShowAllButtonClick(Sender: TObject);
     procedure HelpItemClick(Sender: TObject);
     procedure PaintBoxMouseDown(Sender: TObject; Button: TMouseButton;
@@ -59,9 +64,10 @@ type
 var
   DForm: TDForm;
   IsDrawing: boolean;
-  CurrentTool: TFigureTool;
+  CurrentTool, TPawTool: TFigureTool;
   Param: array of TParam;
   CanvasItems, History: array of TFigure;
+
 implementation
 
 {$R *.lfm}
@@ -102,16 +108,20 @@ end;
 
 procedure TDForm.ToolButtonClick(Sender: TObject);
 var
-ParamsPanel: TPanel;
+  ParamsPanel: TPanel;
+  i: integer;
 begin
   CurrentTool := Tool[(Sender as TSpeedButton).tag];
-  ParamsPanel:= TPanel.Create(DForm);
-  ParamsPanel.Parent:=Panel;
-  ParamsPanel.Width:=110;
-  ParamsPanel.Height:=300;
-  ParamsPanel.Left:=8;
-  ParamsPanel.Top:=248;
+  ParamsPanel := TPanel.Create(DForm);
+  ParamsPanel.Parent := Panel;
+  ParamsPanel.Width := 110;
+  ParamsPanel.Height := 300;
+  ParamsPanel.Left := 8;
+  ParamsPanel.Top := 248;
   CurrentTool.ParamsCreate(ParamsPanel);
+  for i := 0 to High(CurrentFigures) do
+    if not ((Sender as TSpeedbutton).tag = 8) then
+      CurrentFigures[i].Selected := False;
   Invalidate;
 end;
 
@@ -143,6 +153,34 @@ begin
   PaintBox.Invalidate;
 end;
 
+procedure TDForm.DeleteSelectedItemClick(Sender: TObject);
+var
+  i, j: integer;
+begin
+  j := 0;
+  for i := 0 to high(CurrentFigures) do
+  begin
+    if (CurrentFigures[i].Selected) then
+      FreeAndNil(CurrentFigures[i])
+    else
+    begin
+      CurrentFigures[j] := CurrentFigures[i];
+      j := j + 1;
+    end;
+  end;
+  setLength(CurrentFigures, j);
+  Invalidate;
+end;
+
+
+procedure TDForm.SelectedAllItemClick(Sender: TObject);
+var
+  i: integer;
+begin
+  for i := 0 to High(CurrentFigures) do
+    CurrentFigures[i].Selected := True;
+  Invalidate;
+end;
 procedure TDForm.PaintBoxMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: integer);
 begin
@@ -151,7 +189,6 @@ begin
     IsDrawing := True;
     CurrentTool.MouseDown(X, Y, AWidth);
     MaxMin(ScreenToWorld(Point(X, Y)));
-    PaintBox.Invalidate;
   end;
 end;
 
@@ -168,6 +205,7 @@ end;
 procedure TDForm.PaintBoxMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: integer);
 var
+  ParamsPanel: TPanel;
   i: integer;
 begin
   if Button = mbLeft then
@@ -175,6 +213,7 @@ begin
     IsDrawing := False;
     CurrentTool.MouseUp(X, Y, PaintBox.Canvas);
     PaintBox.Invalidate;
+    SelectedCreateParamFlag := False;
   end;
 end;
 
@@ -182,9 +221,12 @@ procedure TDForm.PaintBoxPaint(Sender: TObject);
 var
   i: integer;
 begin
-  for i := 0 to High(CurrentFigures) do
+  for i := 0 to high(CurrentFigures) do
   begin
     CurrentFigures[i].Draw(PaintBox.Canvas);
+    if CurrentFigures[i].Selected then
+      CurrentFigures[i].DrawSelection(CurrentFigures[i], PaintBox.Canvas,
+        (CurrentFigures[I] as TLineFigure).Width);
   end;
   ScrollBarVertical.Max := trunc(MaxPoint.Y);
   ScrollBarVertical.Min := trunc(MinPoint.Y);

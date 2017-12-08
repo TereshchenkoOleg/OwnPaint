@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, Graphics, ExtCtrls, Dialogs, Spin,
-  StdCtrls;
+  StdCtrls, Figures;
 type
 TParam = class
  procedure CreateObjects(Panel: TPanel); virtual; abstract;
@@ -50,6 +50,8 @@ TPenStyleParam = class(TParam)
 psDash, psDashDot, psDashDotDot);
 end;
   var
+
+    CurrentFigures: array of TFigure;
     APenColor, ABrushColor: TColor;
     APenStyle: TPenStyle;
     ABrushStyle: TBrushStyle;
