@@ -90,12 +90,40 @@ object DForm: TDForm
         Caption = 'Выход'
         OnClick = CloseItemClick
       end
+      object Saveitem: TMenuItem
+        Caption = 'Сохранить'
+        OnClick = SaveButtonClick
+      end
+      object OpenItem: TMenuItem
+        Caption = 'Открыть'
+        OnClick = OpenButtonClick
+      end
     end
     object EditItem: TMenuItem
       Caption = 'Редактировать'
-      object BackItem: TMenuItem
+      object RedoItem: TMenuItem
         Caption = 'Назад'
-        OnClick = BackActionExecute
+        OnClick = RedoClick
+      end
+      object UndoItem: TMenuItem
+        Caption = 'Вернуть'
+        OnClick = UndoClick
+      end
+      object CopyItem: TMenuItem
+        Caption = 'Копировать'
+        OnClick = CopySelectedClick
+      end
+      object PasteItem: TMenuItem
+        Caption = 'Вставить'
+        OnClick = PasteSelectedClick
+      end
+      object UpItem: TMenuItem
+        Caption = 'Поднять'
+        OnClick = SelectUpItemClick
+      end
+      object DownItem: TMenuItem
+        Caption = 'Опустить'
+        OnClick = SelectDownItemClick
       end
       object ClearItem: TMenuItem
         Caption = 'Отчистить всё'
